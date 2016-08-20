@@ -2,7 +2,7 @@ import threading
 import picamera
 
 
-class vista():
+class Vista():
     def __init__(self,inidirizzoTrasmissione,portaTrasmissione,handler):
         #Setto il sistema di trasmissione
         self.address = inidirizzoTrasmissione
@@ -13,7 +13,7 @@ class vista():
         if self.gstreamer != None:
             println("Trasmissione in corso")
             return
-        if self.address==None || self.port==None:
+        if self.address==None or self.port==None:
             println("Parametri di connessione non settati")
             return
         
@@ -26,10 +26,27 @@ class vista():
         ], stdin=subprocess.PIPE)
         print ("Trasmissione partita")
 
-    def startCamera(self):
+    def startCamera(self,width,height):
+        if width==None:
+            self.width = 1280
+        else:
+            self.width=width
+        if height==None:
+                self.height = 1280
+        else:
+            self.height=height
+        
         if self.camera==None:
-            self.camera = picamera.PiCamera(resolution=(1280, 720), framerate=25)
+            self.camera = picamera.PiCamera(resolution=(self.width, self.height), framerate=25)
             self.camera.hflip = True
+        if self.gstreamer == None:
+            print("Trasmissioe non ancora partita")
+            return
+        self.camera.start_recording(self.gstreamer.stdin, format='h264', bitrate=2000000)
+
+        
+
+        
 
         
             
