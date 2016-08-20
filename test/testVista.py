@@ -1,6 +1,6 @@
 import sys  
 sys.path.append("../sensi/vista")  
-import Vista
+import vista
 
 
 #attivo la trasmissione
